@@ -22,15 +22,25 @@ namespace WarriorGame
 
         public void RunApp()
         {
-            FillUpAvatarList();
-            MakeANewUser(ChooseAName());
-            _player.YourAvatar = validateInput(ChooseYourWarrior());
-            Console.Clear();
-            Console.WriteLine(_player.Description());
-            Console.WriteLine("Lets go to Battle");
-            var randomEnemy = _battle.GetRandomEnemy(AllAvatarsInTheGame);
-            _battle.GoToBatle(_player.YourAvatar, randomEnemy);
-            Console.WriteLine(_battle.WonOrLost(_player.YourAvatar, randomEnemy));
+            fillUpItemShopList();
+            //FillUpAvatarList();
+
+            //MakeANewUser(ChooseAName());
+            //_player.YourAvatar = validateInput(ChooseYourWarrior());
+            //Console.Clear();
+            //Console.WriteLine(_player.Description());
+            //Console.WriteLine("Lets go to Battle");
+            //var randomEnemy = _battle.GetRandomEnemy(AllAvatarsInTheGame);
+            //_battle.GoToBatle(_player.YourAvatar, randomEnemy);
+            //Console.WriteLine(_battle.WonOrLost(_player.YourAvatar, randomEnemy));
+            Console.WriteLine("Welcome the shop, u can buy potions and weapons here");
+            ShowItemOnShop();
+            var WorP =chooseWorPValidate();
+            ShowWorP(WorP);
+            ChooseItemToBuy();
+            _shop.SelectedItem = ValidateItemBuy(WorP);
+            Console.WriteLine(_shop.Buy(_player));
+
         }
         
         public void FillUpAvatarList()
@@ -47,6 +57,19 @@ namespace WarriorGame
             AllAvatarsInTheGame.Add(new Enemie("Zoombie", 100, 40, 70));
 
 
+        }
+
+        public void fillUpItemShopList()
+        {
+            _shop.AllAvailableItems.Add(new Potion("Fire Potion", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Potion("Water Potion", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Potion("Rock Potion", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Potion("Electric Potion", 50, 25, 50, 0));
+
+            _shop.AllAvailableItems.Add(new Weapon("Fire Weapon", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Weapon("Water Weapon", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Weapon("Rock Weapon", 50, 25, 50, 0));
+            _shop.AllAvailableItems.Add(new Weapon("Electric Weapon", 50, 25, 50, 0));
         }
         public string ChooseAName()
         {
@@ -71,22 +94,25 @@ namespace WarriorGame
                 }
             }
         }
-        public string ChooseYourWarrior()
+        public void ChooseYourWarrior()
         {
             Console.WriteLine("Write down the element of the warrior you want");
             ShowWarriorsToChoose();
-            return Console.ReadLine();
+           
 
 
 
         }
 
-        public Warrior validateInput(string ReadLine)
+        public Warrior validateInput() 
         {
-            var readline = ReadLine.ToLower();
+            
             while (true)
             {
-               if(readline == "fire")
+                var ReadLine = Console.ReadLine();
+                var readline = ReadLine.ToLower();
+
+                if (readline == "fire")
                 {
                     if(AllAvatarsInTheGame[0] is Warrior w)
                     return w;
@@ -101,20 +127,129 @@ namespace WarriorGame
                     if (AllAvatarsInTheGame[2] is Warrior w)
                         return w;
                 }
-               else
-                {
+               
+                
                     Console.WriteLine("Invalid Input, try again");
                     continue;
-                }
-             
+                
+                
+            }
+          
+
+        }
+        public void ShowItemOnShop()
+        {
+            Console.Clear();
+            showPotions();
+            showWeapons();
+            Console.WriteLine("Choose what kind of Item u want to buy. P for Potions, W for Weapons");
+
+        }
+
+        public void showPotions()
+        {
+            Console.WriteLine("POTIONS");
+            var Potions = _shop.AllAvailableItems.FindAll(i => i is Potion p);
+            for (int i = 0; i < Potions.Count; i++)
+            {
+                Potions[i].description();
+
+                
+                    Console.WriteLine($"{i} - {Potions[i].Description}");
+                    Console.WriteLine("");
+            }
+        }
+
+        
+
+        public void showWeapons()
+        {
+            Console.WriteLine("WEAPONS");
+            var Weapons = _shop.AllAvailableItems.FindAll(i => i is Weapon w);
+            for (int i =0; i< Weapons.Count; i++)
+            {
+                Weapons[i].description();
+
+                    Console.WriteLine($"{i} - {Weapons[i].Description}");
+                    Console.WriteLine("");
                 
             }
 
+         
+                
 
-            
         }
 
-      
+
+        public string chooseWorPValidate()
+        {
+            
+            while (true)
+            {
+                var UserInput = Console.ReadLine();
+                var INPUT = UserInput.ToUpper();
+                if (INPUT == "W")
+                {
+                    return "w";
+                }
+                else if(INPUT == "P")
+                {
+                    return "p";
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input, try again");
+                    continue;
+                }
+            }
+        }
+
+        public void ShowWorP(string WorP)
+        {
+            Console.Clear();
+            if (WorP == "p") showPotions();
+            else if(WorP == "w") showWeapons();
+        }
+
+
+        public void ChooseItemToBuy()
+        {
+            Console.WriteLine("Chose the item u want to buy by pressing the number in front of it");
+        }
+
+        public IItem ValidateItemBuy(string WorP)
+        {
+            while (true)
+            {
+                try
+                {
+                    var userInput = Convert.ToInt32(Console.ReadLine());
+                    if(WorP == "w")
+                    {
+                       var Weapons = _shop.AllAvailableItems.FindAll(i => i is Weapon w);
+                        return Weapons[userInput];
+                    }
+                    else if(WorP == "p")
+                    {
+                        var Potions = _shop.AllAvailableItems.FindAll(i => i is Potion p);
+                        return Potions[userInput];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input, try again");
+                        continue;
+                    }
+
+                 }
+                catch
+                 {
+                     Console.WriteLine("Invalid Input, try again");
+                     continue;
+                 }
+            }
+        }
+
+
 
     }
 }

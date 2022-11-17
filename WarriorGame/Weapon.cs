@@ -16,14 +16,16 @@ namespace WarriorGame
         public int PowerIncrease { get; set; }
         public int HealthIncrease { get ; set; }
         public int SpeedIncrease { get ; set; }
-        string IItem.Description { get; set; }
+       
 
-        public Weapon(string name, int price)
+        public Weapon(string name, int Price, int powerIncrease, int healthIncrease, int speedIncrease)
         {
             Name = name;
-            this.price = price;
-            
-            
+            price = Price;
+            PowerIncrease = powerIncrease;
+            HealthIncrease = healthIncrease;
+            SpeedIncrease = speedIncrease;
+
         }
 
         public void stopUsing(Warrior User)
@@ -47,7 +49,7 @@ namespace WarriorGame
 
         public void description()
         {
-            Description = $"The Weapon {Name} increase your warrior power in {PowerIncrease}, the speed in {SpeedIncrease} and the health in {HealthIncrease},While using the weapon. ";
+            Description = $"The Weapon {Name} costs {price}.It increases your warrior power in {PowerIncrease}, the speed in {SpeedIncrease} and the health in {HealthIncrease},While using the weapon. ";
         }
     }
 }

@@ -8,7 +8,7 @@ namespace WarriorGame
 {
     internal class ItemShop : IItemShop
     {
-        public List<IItem> AllAvailableItems = new List<IItem>();
+        public List<IItem> AllAvailableItems { get; } = new List<IItem>();
 
         public IItem SelectedItem { get; set; }
 

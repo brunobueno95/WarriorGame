@@ -2,8 +2,10 @@
 {
     internal interface IItemShop
     {
-        IItem SelectedItem { get; set; }
+        public List<IItem> AllAvailableItems { get; }
 
-        string Buy(IUser TheUser);
+        public IItem SelectedItem { get; set; }
+
+        public string Buy(IUser TheUser);
     }
 }

@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 
 namespace WarriorGame
 {
-    internal class Potions : IItem
+    internal class Potion : IItem
     {
         public string Name { get ; set; }
         public int price { get; set; }
-        public string Description { get; set; }
+        public string Description { get; private set; }
         public int PowerIncrease { get;set; }
         public int HealthIncrease { get; set; }
         public int SpeedIncrease { get; set ; }
 
+
+        public Potion(string name, int Price, int powerIncrease, int healthIncrease, int speedIncrease)
+        {
+            Name = name;
+            price = Price;
+            PowerIncrease = powerIncrease;
+            HealthIncrease = healthIncrease;
+            SpeedIncrease = speedIncrease;
+
+        }
+
         public void description()
         {
-            Description = $"The Potion {Name} increase your warrior power in {PowerIncrease}, the speed in {SpeedIncrease} and the health in {HealthIncrease} ";
+            Description = $"The Potion {Name} costs {price}.It increases your warrior power in {PowerIncrease}, the speed in {SpeedIncrease} and the health in {HealthIncrease} ";
             
         }
 
